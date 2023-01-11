@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <!-- En-tête de la page -->
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../style.css" />
+  <title>Projet Espilon Alcen</title>
+</head>
+
+<body>
+  <!-- Corps de la page -->
+  <header>
+    <a  class="hdr_element" href="https://enseirb-matmeca.bordeaux-inp.fr/fr"><img src="../Images/logo_mini.png" alt="Logo ENSEIRB-MATMECA" title="ENSEIRB-MATMECA" /></a>
+    <h1 class="hdr_element"><center>A solver for icing problems</center></h1>
+    <a  class="hdr_element" href="https://www.epsilon-alcen.com/fr"><img src="../Images/logoE_mini.png" alt="Logo Epsilon-Alcen" title="EPSILON-ALCEN" /></a>
+  </header>
+
+  <nav>
+    <a class="texte" href="../accueil.html">HOME</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="problem.html">PHYSICAL MODEL</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="su2.html">SU2 CODE</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="program.html">PROGRAMMING</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="results.html">NUMERICAL RESULTS</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="contact.html">ABOUT US</a>
+  </nav>
+
+
+  <center>
+    <section>
+      <!-- Corps de la page -->
+      <br />
+
+      <center>
+        <img src="../Images/LogoSU2.png" alt="Duplication" />
+      </center>
+
+      <!-- <h3>Study of the structure of the code</h3> -->
+      <p>SU2 is an open-source suite for multiphysics simulations created by Stanford University.
+      This code is written in C++ and have more than 500,000 lines of code.
+      Meant to resolve partial differential equations on unstructured meshes,
+      SU2 has a wide applicability in various fields, like aeronautical, automotive, naval or renewable energy.
+      The core of the suite is SU2 CFD, which can be used for compressible or turbulent flows.</p>
+
+
+      <h2>Structure of SU2 CFD</h2>
+
+      <p>SU2 CFD is divided into several classes as it is shown in the figure below. Classes in CConfig enable to read the config file and configurate the simulation.
+      Classes in COutput create output files for the simulation in the requested format.
+      CNumerics contains the different schemes to calculate flows, but the different types of equations are computed in CSolver.
+      The classes in CSolver are used to construct the jacobian and the source terms in each iteration.
+      These classes also call functions from CNumerics to use scheme defined in CNumerics.
+      However, equations are only present in their classes in CSolver, where our modifications are mainly located in a new class.</p>
+
+      <figure>
+        <img src="../Images/SU2_petit.png" alt="Duplication" />
+      </figure>
+    </section>
+  </center>
+
+
+  <footer>
+
+  </footer>
+</body>
+</html>

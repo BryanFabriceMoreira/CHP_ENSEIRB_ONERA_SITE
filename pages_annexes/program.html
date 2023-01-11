@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <!-- En-tête de la page -->
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../style.css" />
+  <title>Projet Espilon Alcen</title>
+  <script type="text/javascript" src="http://latex.codecogs.com/latexit.js"></script>
+</head>
+
+<body>
+  <!-- Corps de la page -->
+  <header>
+    <a  class="hdr_element" href="https://enseirb-matmeca.bordeaux-inp.fr/fr"><img src="../Images/logo_mini.png" alt="Logo ENSEIRB-MATMECA" title="ENSEIRB-MATMECA" /></a>
+    <h1 class="hdr_element"><center>A solver for icing problems</center></h1>
+    <a  class="hdr_element" href="https://www.epsilon-alcen.com/fr"><img src="../Images/logoE_mini.png" alt="Logo Epsilon-Alcen" title="EPSILON-ALCEN" /></a>
+  </header>
+
+  <nav>
+    <a class="texte" href="../accueil.html">HOME</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="problem.html">PHYSICAL MODEL</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="su2.html">SU2 CODE</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="program.html">PROGRAMMING</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="results.html">NUMERICAL RESULTS</a> &nbsp; &nbsp; &nbsp;
+    <a class="texte" href="contact.html">ABOUT US</a>
+  </nav>
+
+
+  <center>
+    <section>
+      <h2>Duplication of Euler model</h2>
+      <!-- <ol>
+      <li>Comprehension du code</li>
+      <li>Copie de Euler</li>
+      </ol> -->
+
+
+
+      <p>In the SU2 code, a solver has been added for the impact equations.
+      This solver uses the air solution generated with the Euler solver.
+      These new equations are similar to the Euler equations, which is why, as said before,
+      the impact solver is based on the pre-existing Euler solver.
+      The first step was to understand the structure of SU2_CFD and search how the Euler solver was implemented in order
+      to duplicate it and create the new impact solver, before further modifications.
+      The duplication of the solver has added 20,000 lines distributed in various files in the SU2 code.
+      </p>
+
+
+
+      <center>
+        <figure>
+          <img src="../Images/graphe.png" alt="Duplication" />
+          <figcaption> Figure 1 : Duplication of Euler model in impact model</figcaption>
+        </figure>
+      </center>
+
+      <!-- <p class="para"> Puis </p> -->
+      <!-- <ul>
+      <li>Nettoyage des fonctions inutile</li>
+      <li>Affichage des quantités utiles</li>
+      <li>Terme source (<a href="ts.html">details</a>)</li>
+      <li>Condition aux bords</li>
+      </ul> -->
+
+      <h2>Cleaning</h2>
+      <p>
+        The goal of the cleaning was to reduce the number of lines in the impact solver, mainly in solver_direct_impact.cpp. The cleaning was supposed to ease the work in this file.
+        For each function, if the function was not necessary, the function was removed in the files solver_direct_impact.cpp and solver_structure.h. Else unnecessary parts, like viscous part or lift coefficient, were removed.
+        After every modification, a series of tests was needed in order to check that the results remained unchanged.
+        32 functions have been removed, which reduced the number of lines in solver_direct_impact.cpp by 9,000.
+      </p>
+
+
+      <h2>Output</h2>
+      <p>
+        There are two output formats in SU2 CFD for visualisation which are Paraview and Tecplot. If Paraview is great for 2D or 3D postprocessing, Tecplot is more convenient for plotting graphs of 1D cuts in python.
+        The output variables were changed for the impact equations with the removal of unnecessary variables in impact output files like pressure, pressure coefficient or Mach number.
+        Then, impact variables have been added in both conservative and non-conservative forms to ease postprocessing.
+        The collection efficiency, that characterises the ability of the airfoil to capture water, has been computed and exported. This is a common way in the literature to compare droplet impingement rates.
+      </p>
+
+      <h2>Source Term </h2> <!-- (<a href="ts.html">details</a>) -->
+      <p>
+        After the duplication of the Euler solver, the impact model needed further modifications in spite of its resemblance with the latter, since the <a href="problem.html" class="text">system</a> to solve is different.
+        Indeed, in comparison with the Euler problem, there is no pressure term and there are two terms to add : the drag and the gravity terms.
+      </p>
+
+      <p>
+        First, the gravity term was already implemented in SU2, and should be added for the impact model in the same way as in the Euler model.
+        Yet, the drag term needed to be added in SU2. In order to know how to do so,
+        the problem was rewrote in a conservative way with W the solution vector, F the flow and Q the source term.
+      </p>
+
+      <center>
+        <div lang="latex" background="white" class="larg1">
+          \large
+          \partial_tW + \nabla\cdot F(W) = Q(W) \\
+        </div>
+      </center>
+
+      <p>
+        Then, knowing that the numerical scheme used to solve this equation is a Roe scheme with implicit Euler, the source term needed to be added properly in the Jacobian of the system.
+        This Jacobian is described below, where the Jacobian of R is the Jacobian of the left part of the previous equation, already computed in the Euler model, and the Jacobian of Q is the jacobian of the source term.
+      </p>
+
+      <center>
+        <div lang="latex" background="white" class="larg2">
+          \large
+          Jac(W) = Jac_R(W) - Jac_Q(W)
+        </div>
+      </center>
+
+      <p>
+        Hence, the Jacobian of Q was calculated and added to the global Jacobian of the system.
+      </p>
+
+      <center>
+        <div lang="latex" background="white" class="larg3">
+          \large
+          $$ Jac_Q(W) = \begin{pmatrix} 0 & 0 & 0 & 0 \\
+          Cu_a &  -C & 0 & 0 \\
+          Cv_a & 0 & -C & 0 \\
+          Cw_a - \left(1 - \frac{\rho_a}{\rho_w}\right) g& 0 & 0 & -C
+          \end{pmatrix}$$
+        </div>
+      </center>
+
+      <p>
+        After the addition of these two terms, the pressure term had to be removed. However, according to several publications, the removal of the pressure term leads to some numerical problems and even more to a solution that diverges.
+        So, an upstream work was needed to stabilize the system, that was done by our supervisors.
+      </p>
+
+      <h2>Boundary Conditions</h2>
+      <p>
+        A new type of boundary conditions for the impact model was added, which is named impact WALL and described below.
+      </p>
+
+      <center>
+        <div lang="latex" background="white"  class="larg4">
+          \large
+          $$\\
+          \textbf{u}_{\textbf{d}}^{n+1}\cdot \textbf{n}=0 ~~\text{and}~~ \alpha^{n+1} = 0 ~~~~~~\text{if }~~ \alpha^{n+1}\textbf{u}_{\textbf{d}}^{n+1}\cdot \textbf{n}>0 \\
+          \textbf{u}_{\textbf{d}}^{n+1}=\textbf{u}_{\textbf{d}}^{n} ~~~\text{and}~~ \alpha^{n+1} = \alpha^{n} ~~~~~\text{if }~~ \alpha^{n+1}\textbf{u}_{\textbf{d}}^{n+1}\cdot \textbf{n} \leq 0\\
+          $$
+        </div>
+
+        <p>&nbsp;</p>
+
+        <figure>
+          <img src="../Images/aile.png" alt="Boundary Conditions Figure" title="Boundary Conditions Figure" />
+          <figcaption> Figure 2 : Impact WALL boundary condition</figcaption>
+        </figure>
+      </center>
+
+      <p>
+        The idea is: if the speed of the flow penetrates the boundary, we set the velocity normal component and the coefficient alpha at 0,
+        whereas if the speed of flow emerges from the boundary, the velocity is not changed. Simultaneously, a new variable is defined on this impact WALL boundary where the impinging mass is calculated.
+      </p>
+
+
+      <p>&nbsp;</p> <p>&nbsp;</p>
+
+      <p>
+        These modifications permit us to start running the program and studying the results. The various results obtained
+        are presented in the tab <a href="results.html" class="text">Results</a>.
+      </p>
+
+    </section>
+  </center>
+
+
+  <footer>
+
+  </footer>
+
+</body>
+</html>
