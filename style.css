@@ -10,7 +10,7 @@ body
   /* background: linear-gradient(#243347, #334864, #456186, #334864, #243347); */
   background: linear-gradient(#243347, #334864, #243347);
   text-align: justify;
-  background-color: #334864; /* Placez une couleur de fond si la page ne charge pas le dégradé */
+  background-color: #89abd6; /* Placez une couleur de fond si la page ne charge pas le dégradé */
   padding:0;
   margin:0;
   min-height: 600px;
@@ -127,7 +127,7 @@ header
   flex:1;
   height: 125px;
   min-width : 600px;
-  font-family:  Georgia, Arial;
+  font-family:  Avenir Light, Forum;
   line-height:3.4em;
   /*background-image: url("Images/flocons_mini.png");*/
   background-position: top right;
