@@ -1,0 +1,201 @@
+<style>
+html
+{
+  min-height: 100%;
+}
+
+body
+{
+  /* background: linear-gradient(#ABC8E2, #375D81, #183152, #375D81, #ABC8E2); */
+  /* background: linear-gradient(#243347, #334864, #456186, #334864, #243347); */
+  background: linear-gradient(#243347, #334864, #243347);
+  text-align: justify;
+  background-color: #334864; /* Placez une couleur de fond si la page ne charge pas le dégradé */
+  padding:0;
+  margin:0;
+  min-height: 600px;
+  min-width: 1300px;
+}
+
+h1
+{
+  font-size : 40px;
+  color : #243347;
+}
+
+h2
+{
+  font-size : 30px;
+  color : #5D85B9;
+}
+
+h3
+{
+  color : red;
+}
+
+h4
+{
+  color : green;
+}
+
+p
+{
+  font-size : 18px;
+  color : #CBD0D6;
+}
+
+div
+{
+  display: flex;
+  text-align: center;
+  align-items:center;
+  justify-content: space-around;
+  background-color: white;
+  border: 2px groove #194c70;
+  border-radius: 10px;
+  min-height : 40px;
+  color: white;
+}
+
+.larg1
+{
+  max-width: 280px;
+}
+
+.larg2
+{
+  max-width: 350px;
+}
+
+.larg3
+{
+  height: 140px;
+  max-width: 500px;
+}
+
+.larg4
+{
+  height: 80px;
+  max-width: 530px;
+}
+.para
+{
+  color: #9CC7FE;
+}
+
+ol, li
+{
+  color: darkblue;
+}
+
+figcaption
+{
+  color : white;
+}
+
+#quest
+{
+  font-style: italic;
+}
+
+header
+{
+  display: flex;
+  justify-content: space-around;
+  align-items:center;
+  background-color: #6C86A8;
+  font-style: italic;
+  height: 200px;
+  min-width:1300px;
+}
+
+.hdr_element
+{
+  height: 197px;
+}
+
+.hdr_element:nth-child(1)
+{
+  /* background-color: #000728; */
+  width : 340px;
+}
+
+.hdr_element:nth-child(2)
+{
+  /*background-color: red;*/
+  flex:1;
+  height: 125px;
+  min-width : 600px;
+  font-family:  Georgia, Arial;
+  line-height:3.4em;
+  /*background-image: url("Images/flocons_mini.png");*/
+  background-position: top right;
+}
+
+.hdr_element:nth-child(3)
+{
+  /*background-color: blue;*/
+  height: 70px;
+}
+
+nav
+{
+  display: flex;
+  height: 22px;
+  font-size : 18px;
+  justify-content: center;
+  border: 1px solid #194c70;
+  background-color: #446B9C;
+  min-width: 1300px;
+  font-family : Verdana, Times New Roman;
+}
+
+.texte
+{
+  color : #CBD0D6;
+  text-decoration: none;
+  /* background-color: #20608d; */
+}
+
+.texte:hover
+{
+  color : black;
+}
+
+.text
+{
+  text-decoration: none;
+  color : #CBD0D6;
+  font-weight: bold;
+}
+
+section
+{
+  justify-content: space-around;
+  text-align: justify;
+  align-items:center;
+  width: 800px;
+}
+
+footer
+{
+  text-align: justify;
+  max-width:850px;
+  min-width:800px;
+  min-height:50px;
+}
+
+toph
+{
+  display: flex;
+  justify-content: space-around;
+}
+
+#sect
+{
+  margin-left: 180px;
+  border: 1px solid blue;
+}
+
+</style>
